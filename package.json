@@ -9,6 +9,9 @@
     "import": "./dist/genderapi.esm.js",
     "require": "./dist/genderapi.umd.js"
   },
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "rollup -c",
     "test": "node ./test/test.js"
