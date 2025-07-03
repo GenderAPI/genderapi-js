@@ -1,0 +1,21 @@
+{
+  "name": "genderapi",
+  "version": "1.0.0",
+  "description": "Official JS SDK for GenderAPI.io",
+  "main": "dist/genderapi.umd.js",
+  "module": "dist/genderapi.esm.js",
+  "type": "module",
+  "exports": {
+    "import": "./dist/genderapi.esm.js",
+    "require": "./dist/genderapi.umd.js"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "node ./test/test.js"
+  },
+  "author": "GenderAPI.io",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^4.44.1"
+  }
+}
