@@ -10,7 +10,11 @@
             this.baseUrl = baseUrl;
         }
 
-        async getGenderByName(name, country = null, askToAI = false, forceToGenderize = false) {
+        async getGenderByName({name, country = null, askToAI = false, forceToGenderize = false}) {
+            if(typeof name !== "string" || !name.trim()) {
+                return {status:false,errno: 91, errmsg: "Missing name parameter on your request."};
+            }
+
             return await this._postRequest("/api", {
                 name,
                 country,
@@ -20,6 +24,9 @@
         }
 
         async getGenderByEmail(email, country = null, askToAI = false) {
+            if(typeof email !== "string" || !email.trim()) {
+                return {status:false,errno: 91, errmsg: "Missing email parameter on your request."};
+            }
             return await this._postRequest("/api/email", {
                 email,
                 country,
@@ -28,6 +35,9 @@
         }
 
         async getGenderByUsername(username, country = null, askToAI = false, forceToGenderize = false) {
+            if (typeof username !== "string" || !username.trim()) {
+                return {status:false,errno: 91, errmsg: "Missing username parameter on your request."};
+            }
             return await this._postRequest("/api/username", {
                 username,
                 country,
