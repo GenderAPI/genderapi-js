@@ -36,6 +36,7 @@ Replace `"YOUR_API_KEY"` with your real API key.
 
 ---
 
+
 ## 📝 Usage in Node.js, React, Vue
 
 You can import the SDK in either **ES Modules** or **CommonJS** style.
