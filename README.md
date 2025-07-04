@@ -23,7 +23,7 @@ npm install genderapi
 Don’t want to install packages? Just include the SDK from a CDN in your HTML page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/genderapi@1.0.1/dist/genderapi.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/genderapi@1.0.2/dist/genderapi.umd.js"></script>
 <script>
   const api = new GenderAPI('YOUR_API_KEY');
   api.getGenderByName({ name: 'Michael' })
