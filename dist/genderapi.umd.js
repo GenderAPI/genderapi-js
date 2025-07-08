@@ -121,7 +121,7 @@
 
             const payload = { data: emailsData };
 
-            return await this._postRequest("/api/email/multi", payload);
+            return await this._postRequest("/api/email/multi/country", payload);
         }
 
         /**
@@ -160,7 +160,7 @@
 
             const payload = { data: usernamesData };
 
-            return await this._postRequest("/api/username/multi", payload);
+            return await this._postRequest("/api/username/multi/country", payload);
         }
 
 
