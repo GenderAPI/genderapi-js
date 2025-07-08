@@ -59,20 +59,16 @@ class GenderAPI {
             body
         });
 
-        if (response.status === 500) {
+        if (response.status === 500 || response.status === 502 || response.status === 503 || response.status === 504 || response.status === 408) {
             throw new Error(`Server Error: ${response.statusText}`);
         }
 
-        if (response.status !== 200) {
-            const errorJson = await response.json().catch(() => null);
-            if (errorJson) {
-                throw new Error(`API Error ${response.status}: ${JSON.stringify(errorJson)}`);
-            } else {
-                throw new Error(`API Error ${response.status}: ${response.statusText}`);
-            }
+        try {
+            return await response.json()
+        }catch (e) {
+            throw new Error(`API Error ${response.status}: ${JSON.stringify(e)}`);
         }
 
-        return await response.json();
     }
 }
 
