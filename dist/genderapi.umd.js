@@ -46,6 +46,124 @@
             });
         }
 
+        /**
+         * Analyze gender for multiple names (up to 100) in one request.
+         *
+         * @param {Array} namesData - Array of objects, each object:
+         *                            { name: String, country?: String, id?: String|Number }
+         * @returns {Promise<Object>} API JSON response
+         */
+        async getGenderByNameBulk(namesData) {
+            if (!Array.isArray(namesData) || namesData.length === 0) {
+                return {
+                    status: false,
+                    errno: 91,
+                    errmsg: "Missing or invalid names data for getGenderByNameBulk request."
+                };
+            }
+
+            if (namesData.length > 100) {
+                return {
+                    status: false,
+                    errno: 92,
+                    errmsg: "getGenderByNameBulk request cannot exceed 100 names."
+                };
+            }
+
+            for (const obj of namesData) {
+                if (typeof obj !== "object" || typeof obj.name !== "string" || !obj.name.trim()) {
+                    return {
+                        status: false,
+                        errno: 93,
+                        errmsg: "Each item in getGenderByNameBulk request must include a valid name string."
+                    };
+                }
+            }
+
+            const payload = { data: namesData };
+
+            return await this._postRequest("/api/name/multi/country", payload);
+        }
+
+        /**
+         * Analyze gender for multiple emails (up to 50) in one request.
+         *
+         * @param {Array} emailsData - Array of objects, each object:
+         *                             { email: String, country?: String, id?: String|Number }
+         * @returns {Promise<Object>} API JSON response
+         */
+        async getGenderByEmailBulk(emailsData) {
+            if (!Array.isArray(emailsData) || emailsData.length === 0) {
+                return {
+                    status: false,
+                    errno: 91,
+                    errmsg: "Missing or invalid emails data for getGenderByEmailBulk request."
+                };
+            }
+
+            if (emailsData.length > 50) {
+                return {
+                    status: false,
+                    errno: 92,
+                    errmsg: "getGenderByEmailBulk request cannot exceed 50 emails."
+                };
+            }
+
+            for (const obj of emailsData) {
+                if (typeof obj !== "object" || typeof obj.email !== "string" || !obj.email.trim()) {
+                    return {
+                        status: false,
+                        errno: 93,
+                        errmsg: "Each item in getGenderByEmailBulk request must include a valid email string."
+                    };
+                }
+            }
+
+            const payload = { data: emailsData };
+
+            return await this._postRequest("/api/email/multi", payload);
+        }
+
+        /**
+         * Analyze gender for multiple usernames (up to 50) in one request.
+         *
+         * @param {Array} usernamesData - Array of objects, each object:
+         *                                { username: String, country?: String, id?: String|Number }
+         * @returns {Promise<Object>} API JSON response
+         */
+        async getGenderByUsernameBulk(usernamesData) {
+            if (!Array.isArray(usernamesData) || usernamesData.length === 0) {
+                return {
+                    status: false,
+                    errno: 91,
+                    errmsg: "Missing or invalid usernames data for getGenderByUsernameBulk request."
+                };
+            }
+
+            if (usernamesData.length > 50) {
+                return {
+                    status: false,
+                    errno: 92,
+                    errmsg: "getGenderByUsernameBulk request cannot exceed 50 usernames."
+                };
+            }
+
+            for (const obj of usernamesData) {
+                if (typeof obj !== "object" || typeof obj.username !== "string" || !obj.username.trim()) {
+                    return {
+                        status: false,
+                        errno: 93,
+                        errmsg: "Each item in getGenderByUsernameBulk request must include a valid username string."
+                    };
+                }
+            }
+
+            const payload = { data: usernamesData };
+
+            return await this._postRequest("/api/username/multi", payload);
+        }
+
+
         async _postRequest(endpoint, payload) {
             const url = `${this.baseUrl}${endpoint}`;
             const headers = {
