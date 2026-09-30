@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": false,
+    "rootDir": "src",
+    "types": []
+  },
+  "include": ["src"]
+}

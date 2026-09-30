@@ -1,8 +1,16 @@
 {
   "name": "genderapi",
-  "version": "1.0.6",
-  "description": "Legacy V1 JavaScript client for GenderAPI.io",
-  "homepage": "https://www.genderapi.io/api-documentation/v1",
+  "version": "2.0.0",
+  "description": "Official GenderAPI.io V2 client for JavaScript and TypeScript",
+  "keywords": [
+    "genderapi",
+    "gender",
+    "name",
+    "email",
+    "username",
+    "api-client"
+  ],
+  "homepage": "https://www.genderapi.io/api-documentation",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GenderAPI/genderapi-js.git"
@@ -10,23 +18,42 @@
   "bugs": {
     "url": "https://github.com/GenderAPI/genderapi-js/issues"
   },
-  "main": "dist/genderapi.umd.js",
-  "module": "dist/genderapi.esm.js",
-  "type": "module",
-  "exports": {
-    "import": "./dist/genderapi.esm.js",
-    "require": "./dist/genderapi.umd.js"
-  },
-  "files": [
-    "dist/"
-  ],
-  "scripts": {
-    "build": "rollup -c",
-    "test": "node ./test/test.js"
-  },
   "author": "GenderAPI.io",
   "license": "MIT",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p test/tsconfig.json",
+    "test": "npm run build && node --test test/client.test.mjs test/no-network.test.mjs test/cjs.test.cjs",
+    "prepack": "npm run build"
+  },
   "devDependencies": {
-    "rollup": "^4.44.1"
+    "typescript": "~5.9.3"
   }
 }

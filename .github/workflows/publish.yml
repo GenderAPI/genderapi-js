@@ -5,13 +5,30 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: Check that the tag matches package.json
+        run: |
+          VERSION="$(node -p 'require("./package.json").version')"
+          if [ "${GITHUB_REF_NAME}" != "v${VERSION}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${VERSION}" >&2
+            exit 1
+          fi
       - run: npm ci
-      - run: npm run build
-      - run: npm publish --access public
+      - run: npm test
+      - run: npm run typecheck
+      # prepack rebuilds dist/ before publishing
+      - run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
