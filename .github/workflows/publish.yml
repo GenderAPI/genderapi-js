@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # npm provenance
+  id-token: write # npm trusted publishing (OIDC) and provenance
 
 jobs:
   publish:
@@ -25,10 +25,11 @@ jobs:
             echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${VERSION}" >&2
             exit 1
           fi
+      # Trusted publishing needs npm CLI 11.5.1 or later; Node 22 ships npm 10.
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
       # prepack rebuilds dist/ before publishing
+      # Authenticated through the npm trusted publisher for GenderAPI/genderapi-js (publish.yml); no token is stored.
       - run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

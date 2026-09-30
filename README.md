@@ -272,7 +272,7 @@ npm run typecheck
 
 Test fixtures in `test/fixtures/openapi-examples.json` are the examples from the V2 OpenAPI document (`node scripts/extract-fixtures.mjs openapi.json` regenerates them).
 
-Releases are published to npm by `.github/workflows/publish.yml` when a `v*` tag matching `package.json` is pushed (repository secret `NPM_TOKEN`).
+Releases are published to npm by `.github/workflows/publish.yml` when a `v*` tag matching `package.json` is pushed. It authenticates through npm trusted publishing (OIDC) for this repository and workflow, so no npm token is stored.
 
 ## License
 
