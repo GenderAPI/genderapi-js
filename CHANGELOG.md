@@ -22,6 +22,6 @@ All notable changes to this package are documented here. This project follows [S
 - `failedItems()` / `succeededItems()` helpers for partial batch success.
 - Safety: no automatic retries, redirects rejected, 10 s default timeout, HTTPS-only base URL (localhost allowed for tests).
 
-### Maintenance of 1.x
+### 1.x availability
 
-- 1.x (V1 API) is in maintenance on the `v1` branch and remains available as `genderapi@1`.
+- 1.x (V1 API) stays available and installable indefinitely (`npm install genderapi@1`); no deprecation or shutdown is planned. The source stays on the `v1` branch.

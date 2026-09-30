@@ -822,7 +822,7 @@ export class GenderAPI {
 
     if (spec.auth && this.#apiKey !== null && this.requireApiKeyAccess) {
       const access = isObject(body.meta) && isObject(body.meta.access) ? body.meta.access : null;
-      if (access && access.mode !== "api_key") {
+      if (access && access.mode !== undefined && access.mode !== null && access.mode !== "api_key") {
         throw new GenderAPIAccessModeError(
           typeof access.mode === "string" ? access.mode : null,
           body,

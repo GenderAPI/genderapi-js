@@ -155,6 +155,28 @@ describe("single predictions (OpenAPI examples)", () => {
     assert.equal(result.meta.access.mode, "ip_trial");
   });
 
+  test("configured key and a response without meta.access.mode is returned normally", async () => {
+    const body = example("POST /api/v2/gender 200 dataset");
+    delete body.meta.access.mode;
+    route = (req, res) => json(res, 200, body);
+    const result = await client().name("Onur");
+    assert.equal(result.meta.access.mode, undefined);
+    assert.equal(server.requests.length, 1);
+  });
+
+  test("configured key: batch with top-level ip_trial access -> GenderAPIAccessModeError", async () => {
+    const body = example("POST /api/v2/gender/batch 200 batch");
+    body.meta.access = { mode: "ip_trial", reason: "api_key_invalid" };
+    route = (req, res) => json(res, 200, body);
+    await assert.rejects(client().genderBatch([{ type: "name", value: "Onur" }]), (error) => {
+      assert.ok(error instanceof GenderAPIAccessModeError);
+      assert.equal(error.accessMode, "ip_trial");
+      assert.deepEqual(error.response, body);
+      return true;
+    });
+    assert.equal(server.requests.length, 1);
+  });
+
   test("API key is read from GENDERAPI_API_KEY when not passed", async () => {
     route = (req, res) => json(res, 200, asApiKey(example("POST /api/v2/gender 200 dataset")));
     const previous = process.env.GENDERAPI_API_KEY;

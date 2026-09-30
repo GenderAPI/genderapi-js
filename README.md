@@ -9,7 +9,7 @@ It infers a likely gender from a **name**, an **email address** or a **username*
 - No automatic retries, no redirects followed, 10 s default timeout
 - Server-side use only (see [Keep your key on the server](#keep-your-key-on-the-server))
 
-> **Version 2.0.0 is a breaking release.** It targets the V2 API only. The 1.x client (V1 API) is in maintenance on the [`v1` branch](https://github.com/GenderAPI/genderapi-js/tree/v1) and stays installable as `npm install genderapi@1`. See [Migrating from 1.x](#migrating-from-1x).
+> **Version 2.0.0 is a breaking release.** It targets the V2 API only. 1.x (V1 API) stays available and installable indefinitely; no deprecation or shutdown is planned. To keep using it, pin 1.x with `npm install genderapi@1`. The source stays on the [`v1` branch](https://github.com/GenderAPI/genderapi-js/tree/v1). See [Migrating from 1.x](#migrating-from-1x).
 
 ## Install
 
@@ -76,7 +76,7 @@ const client = new GenderAPI({
 | `apiKey` | `process.env.GENDERAPI_API_KEY` | Sent only as `Authorization: Bearer ...`, never in a URL. `null` or `""` sends no key. |
 | `timeoutMs` | `10000` | Positive integer. A timeout is reported as `GenderAPITransportError` with code `timeout`. |
 | `baseUrl` | `https://api.genderapi.io/api/v2` | Must be `https://`. `http://` is accepted only for `localhost`, `127.0.0.1` and `[::1]` so you can test against a local stub. |
-| `requireApiKeyAccess` | `true` if a key is set | A missing or unrecognized key falls back to the IP trial. With this on, a successful response whose `meta.access.mode` is not `api_key` is rejected with `GenderAPIAccessModeError`. The request has already been processed, so trial credits may have been used; `error.response` holds the full body. |
+| `requireApiKeyAccess` | `true` if a key is set | A missing or unrecognized key falls back to the IP trial. With this on, a successful response whose `meta.access.mode` is not `api_key` is rejected with `GenderAPIAccessModeError`. The request has already been processed, so trial credits may have been used; `error.response` holds the full body. Set `false` to return the response instead. Never applies without a key, or to `capabilities()`/`errorCatalog()`. Batches use the top-level `meta.access.mode`. |
 | `fetch` | global `fetch` | Any fetch-compatible function. |
 | `userAgent` | `genderapi-js/2.0.0` | Browsers ignore this header. |
 
@@ -177,7 +177,7 @@ All errors extend `GenderAPIError` and have `code`, `status`, `requestId`, `retr
 | `GenderAPIValidationError` | Invalid input or options, detected locally. **Nothing was sent.** | `field`, `code` (`client_validation`, `invalid_option`, `fetch_unavailable`) |
 | `GenderAPIHTTPError` | HTTP status >= 400 | `status`, `code`, `title`, `detail`, `action`, `errors` (validation pointers), `requestId`, `retryAfter`, `billingStatus`, `usage`, `access`, `meta`, `data` (all-failed batch), `body` |
 | `GenderAPITransportError` | No usable response: `timeout`, `network_error`, `redirect_rejected`, `invalid_response` | `code`, `status`, `requestId`, `cause` |
-| `GenderAPIAccessModeError` | A key was set but the response reports another access mode | `accessMode`, `response` |
+| `GenderAPIAccessModeError` | A key was set but the successful response reports another access mode (see `requireApiKeyAccess`). The request has already been processed and trial credits may have been used; do not resend automatically. | `accessMode`, `response` (full body) |
 
 ```js
 import { GenderAPIHTTPError, GenderAPITransportError } from "genderapi";
@@ -220,6 +220,14 @@ Version 1.x was also offered as a browser/CDN script. That usage is no longer pr
 ## Migrating from 1.x
 
 2.0.0 talks to the V2 API. V1 and V2 share your API key and credit balance, but the request and response formats differ, so changing the base URL alone is not enough.
+
+You do not have to migrate. 1.x (V1 API) stays available and installable indefinitely, with no deprecation or shutdown planned. To stay on it:
+
+```bash
+npm install genderapi@1
+```
+
+The 1.x source stays on the [`v1` branch](https://github.com/GenderAPI/genderapi-js/tree/v1).
 
 | 1.x (V1) | 2.x (V2) |
 | --- | --- |
