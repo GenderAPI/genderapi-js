@@ -1,5 +1,7 @@
 # genderapi-js
 
+> This JavaScript package is a legacy V1 client for GenderAPI.io. Its methods, request fields and response examples use the V1 contract. Use the [V1 API documentation](https://www.genderapi.io/api-documentation/v1) for this package. For a new integration, see the [V2 documentation](https://www.genderapi.io/api-documentation). V2 uses a different request and response format; changing the base URL alone does not migrate this client. Results are inferences and may be unresolved. They do not verify a person's identity.
+
 Official JavaScript SDK for [GenderAPI.io](https://www.genderapi.io) — determine gender from **names**, **emails**, and **usernames** using AI.
 
 ---
@@ -21,6 +23,8 @@ npm install genderapi
 ---
 
 ## 📦 CDN Usage (jsDelivr)
+
+> **Credentials:** Keep an account API key in trusted server-side code. A key embedded in browser JavaScript is visible to users. For a web application, call your own backend and let it authenticate requests to GenderAPI.io. The CDN example illustrates loading the legacy library; it is not a credential-protection mechanism.
 
 Don’t want to install packages? Just include the SDK from a CDN in your HTML page:
 
@@ -166,8 +170,8 @@ console.log(result);
 |--------------------|----------|----------|-------------|
 | name               | String   | Yes      | Name to query. |
 | country            | String   | No       | Two-letter country code (e.g. "US"). Helps narrow down gender detection results by region. |
-| askToAI            | Boolean  | No       | Default is `false`. If `true`, sends the query directly to AI for maximum accuracy, consuming 3 credits per request. Recommended for non-latin characters or unusual strings. |
-| forceToGenderize   | Boolean  | No       | Default is `false`. When `true`, analyzes even nicknames, emojis, or unconventional strings instead of returning `null`. |
+| askToAI            | Boolean  | No       | Defaults to `false`. Enables the legacy AI option. Supported single lookups with this option use a 2-credit tariff. This does not guarantee higher accuracy or a resolved result. Ordinary lookups and batch requests follow their V1 billing rules; inspect the returned `used_credits` value. |
+| forceToGenderize   | Boolean  | No       | Default is `false`. When `true`, allows interpretation of nickname-like or unconventional inputs where supported by this V1 method. A result may still be unresolved; the option does not verify identity. |
 
 ---
 
@@ -188,7 +192,7 @@ console.log(result);
 |-----------|--------|----------|-------------|
 | email     | String | Yes      | Email address to query. |
 | country   | String | No       | Two-letter country code (e.g. "US"). |
-| askToAI   | Boolean | No      | Default `false`. If `true`, forces AI lookup. |
+| askToAI   | Boolean | No      | Defaults to `false`. Enables the legacy AI option. Supported single lookups with this option use a 2-credit tariff. This does not guarantee higher accuracy or a resolved result. Ordinary lookups and batch requests follow their V1 billing rules; inspect the returned `used_credits` value. |
 
 ---
 
@@ -209,8 +213,8 @@ console.log(result);
 |--------------------|----------|----------|-------------|
 | username           | String   | Yes      | Username to analyze. |
 | country            | String   | No       | Two-letter country code. |
-| askToAI            | Boolean  | No       | Default `false`. Forces AI lookup if `true`. |
-| forceToGenderize   | Boolean  | No       | Default `false`. Allows analyzing unconventional strings. |
+| askToAI            | Boolean  | No       | Defaults to `false`. Enables the legacy AI option. Supported single lookups with this option use a 2-credit tariff. This does not guarantee higher accuracy or a resolved result. Ordinary lookups and batch requests follow their V1 billing rules; inspect the returned `used_credits` value. |
+| forceToGenderize   | Boolean  | No       | Default is `false`. When `true`, allows interpretation of nickname-like or unconventional inputs where supported by this V1 method. A result may still be unresolved; the option does not verify identity. |
 
 ---
 
@@ -368,9 +372,15 @@ You can try live gender detection directly on GenderAPI.io:
 
 ## 📚 Detailed API Documentation
 
-For the complete API reference, visit:
+For the complete V1 API reference used by this package, visit:
+
+[https://www.genderapi.io/api-documentation/v1](https://www.genderapi.io/api-documentation/v1)
+
+For a new integration, use the V2 documentation instead (different request and response format; this client is not a V2 client):
 
 [https://www.genderapi.io/api-documentation](https://www.genderapi.io/api-documentation)
+
+V2 JavaScript integration guide (new integrations): [https://www.genderapi.io/integrations/javascript](https://www.genderapi.io/integrations/javascript)
 
 ---
 

@@ -1,7 +1,15 @@
 {
   "name": "genderapi",
   "version": "1.0.6",
-  "description": "Official JS SDK for GenderAPI.io",
+  "description": "Legacy V1 JavaScript client for GenderAPI.io",
+  "homepage": "https://www.genderapi.io/api-documentation/v1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GenderAPI/genderapi-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GenderAPI/genderapi-js/issues"
+  },
   "main": "dist/genderapi.umd.js",
   "module": "dist/genderapi.esm.js",
   "type": "module",
